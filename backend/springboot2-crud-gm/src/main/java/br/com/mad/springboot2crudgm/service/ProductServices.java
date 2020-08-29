@@ -3,6 +3,7 @@ package br.com.mad.springboot2crudgm.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import br.com.mad.springboot2crudgm.converter.DozerConverter;
 import br.com.mad.springboot2crudgm.exception.ResourceNotFoundException;
@@ -10,6 +11,7 @@ import br.com.mad.springboot2crudgm.model.Product;
 import br.com.mad.springboot2crudgm.repository.ProductRepository;
 import br.com.mad.springboot2crudgm.vo.ProductVO;
 
+@Service
 public class ProductServices {
 	
 	@Autowired

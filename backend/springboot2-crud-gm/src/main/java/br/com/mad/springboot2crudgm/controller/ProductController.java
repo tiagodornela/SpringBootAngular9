@@ -6,10 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,15 +18,14 @@ import br.com.mad.springboot2crudgm.vo.ProductVO;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/product/v1")
 public class ProductController {
 	
 	@Autowired
 	private ProductServices service;
 	
-	@Autowired
-	private PagedResourcesAssembler<ProductVO> assembler;
+//	@Autowired
+//	private PagedResourcesAssembler<ProductVO> assembler;
 	
 	@ApiOperation(value = "Find all products" )
 	@GetMapping

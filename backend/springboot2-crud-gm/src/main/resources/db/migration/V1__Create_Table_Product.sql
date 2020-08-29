@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS `product` (
   `category` ENUM('perishable', 'non_perishable') NOT NULL,
   `price` decimal(15,2) NOT NULL,
   PRIMARY KEY (`id`)
-) 
+)
