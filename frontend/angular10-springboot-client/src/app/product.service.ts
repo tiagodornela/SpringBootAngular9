@@ -19,8 +19,8 @@ export class ProductService {
     return this.http.post(`${this.baseUrl}`, product);
   }
 
-  updateProduct(id: number, value: any): Observable<Object> {
-    return this.http.put(`${this.baseUrl}/${id}`, value);
+  updateProduct(product: Object): Observable<Object> {
+    return this.http.put(`${this.baseUrl}`, product);
   }
 
   deleteProduct(id: number): Observable<any> {
@@ -32,6 +32,6 @@ export class ProductService {
   }
 
   getProductsByName(name: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${name}`);
+    return this.http.get(`${this.baseUrl}/findProductByName/${name}`);
   }
 }

@@ -1,4 +1,4 @@
-import { Product } from '../product';
+import { Product, Category } from '../product';
 import { Component, OnInit, Input } from '@angular/core';
 import { ProductService } from '../product.service';
 import { ProductListComponent } from '../product-list/product-list.component';
@@ -13,6 +13,7 @@ export class ProductDetailsComponent implements OnInit {
 
   id: number;
   product: Product;
+  categorys = Category;
 
   constructor(private route: ActivatedRoute,private router: Router,
     private productService: ProductService) { }

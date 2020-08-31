@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
-import { Product } from '../product';
+import { Product, Category } from '../product';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-product',
@@ -12,12 +13,23 @@ export class CreateProductComponent implements OnInit {
 
   product: Product = new Product();
   submitted = false;
+  registerForm: FormGroup;
+  keys = Object.keys;
+  categorys = Category;
 
   constructor(private productService: ProductService,
-    private router: Router) { }
+    private router: Router, private formBuilder: FormBuilder) {
+    }
 
   ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      category: ['', Validators.required],
+      price: ['', Validators.required]
+      }, {});
   }
+
+  get f() { return this.registerForm.controls; }
 
   newProduct(): void {
     this.submitted = false;
@@ -36,10 +48,19 @@ export class CreateProductComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    if (this.registerForm.invalid) {
+      return;
+    }
     this.save();
   }
 
   gotoList() {
     this.router.navigate(['/products']);
+  }
+
+  onReset() {
+    this.submitted = false;
+    this.registerForm.reset();
+    this.gotoList();
   }
 }

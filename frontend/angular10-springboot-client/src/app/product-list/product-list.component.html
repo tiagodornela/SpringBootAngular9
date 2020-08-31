@@ -3,6 +3,9 @@
     <h2>Product List</h2>
   </div>
   <div class="panel-body">
+    <div class="keyword-wrapper">
+      <input [formControl]="queryField" type="text" id="keyword" placeholder="search for product..." autofocus/>
+    </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -15,9 +18,10 @@
       <tbody>
         <tr *ngFor="let product of products">
           <td>{{product.name}}</td>
-          <td>{{product.category}}</td>
+          <td>{{categorys[product.category]}}</td>
           <td>{{product.price}}</td>
-          <td><button (click)="deleteProduct(product.id)" class="btn btn-danger">Delete</button>
+          <td><button (click)="productUpdate(product.id)" class="btn btn-primary" style="margin-left: 10px">Update</button>
+              <button (click)="deleteProduct(product.id)" class="btn btn-danger" style="margin-left: 10px">Delete</button>
               <button (click)="productDetails(product.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
           </td>
         </tr>
