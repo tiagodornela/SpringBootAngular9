@@ -1,3 +1,4 @@
+import { Category } from './product';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -33,5 +34,9 @@ export class ProductService {
 
   getProductsByName(name: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/findProductByName/${name}`);
+  }
+
+  getProductsByFilters(filter: Object): Observable<Object> {
+    return this.http.post(`${this.baseUrl}/findProductByFilter`, filter);
   }
 }

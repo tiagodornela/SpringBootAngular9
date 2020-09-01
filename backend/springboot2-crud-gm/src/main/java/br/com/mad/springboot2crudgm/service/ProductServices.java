@@ -9,6 +9,7 @@ import br.com.mad.springboot2crudgm.converter.DozerConverter;
 import br.com.mad.springboot2crudgm.exception.ResourceNotFoundException;
 import br.com.mad.springboot2crudgm.model.Product;
 import br.com.mad.springboot2crudgm.repository.ProductRepository;
+import br.com.mad.springboot2crudgm.vo.FilterVO;
 import br.com.mad.springboot2crudgm.vo.ProductVO;
 
 @Service
@@ -60,6 +61,11 @@ public class ProductServices {
 		Product entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 		repository.delete(entity);
+	}
+
+	public Page<ProductVO> findProductByFilters(FilterVO filter, Pageable pageable) {
+		var page = repository.findProductByFilters(filter.getName(), filter.getCategory(), pageable);
+		return page.map(this::convertToProductVO);
 	}
 
 }

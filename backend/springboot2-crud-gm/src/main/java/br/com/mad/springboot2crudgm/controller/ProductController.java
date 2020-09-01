@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.mad.springboot2crudgm.service.ProductServices;
+import br.com.mad.springboot2crudgm.vo.FilterVO;
 import br.com.mad.springboot2crudgm.vo.ProductVO;
 import io.swagger.annotations.ApiOperation;
 
@@ -63,6 +64,22 @@ public class ProductController {
 		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "name"));
 		
 		Page<ProductVO> products =  service.findProductByName(name, pageable);
+		
+		return new ResponseEntity<>(products, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "Find a specific product by filters name and category" ) 
+	@PostMapping(value = "/findProductByFilter")
+	public ResponseEntity<?> findProductByFilter(@RequestBody FilterVO filter,
+			@RequestParam(value="page", defaultValue = "0") int page,
+			@RequestParam(value="limit", defaultValue = "12") int limit,
+			@RequestParam(value="direction", defaultValue = "asc") String direction) {
+		
+		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+		
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "name"));
+		
+		Page<ProductVO> products =  service.findProductByFilters(filter, pageable);
 		
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}

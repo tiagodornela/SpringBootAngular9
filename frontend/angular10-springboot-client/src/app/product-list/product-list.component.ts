@@ -1,3 +1,4 @@
+import { Filter } from './../filter';
 import { Component, OnInit } from '@angular/core';
 
 import { ProductDetailsComponent } from '../product-details/product-details.component';
@@ -14,9 +15,12 @@ import { FormControl } from '@angular/forms';
 })
 export class ProductListComponent implements OnInit {
   products: Product[];
-  name: String;
-  queryField: FormControl = new FormControl();
+  queryFieldName: FormControl = new FormControl();
+  queryFieldCategory: FormControl = new FormControl();
   categorys = Category;
+  keys = Object.keys;
+
+  filter: Filter =  new Filter;
 
   constructor(private productService: ProductService,
     private router: Router) { }
@@ -25,8 +29,10 @@ export class ProductListComponent implements OnInit {
     debugger;
     this.reloadData();
 
-    this.queryField.valueChanges
-      .subscribe(queryField => this.reloadDataByName(queryField));
+    this.queryFieldName.valueChanges
+      .subscribe(queryFieldName => this.reloadDataByName(queryFieldName));
+    this.queryFieldCategory.valueChanges
+      .subscribe(queryFieldCategory => this.reloadDataByCategory(queryFieldCategory));
   }
 
   reloadData() {
@@ -41,21 +47,28 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  reloadDataByName(queryField:string) {
-    if (queryField === undefined || queryField === null || queryField === ""){
-      this.reloadData();
-    } else {
-      this.productService.getProductsByName(queryField)
-      .subscribe((result: PageProduct) => {
-        if (result !== undefined &&
-            result.content !== undefined && result.content.length > 0){
-          this.products = result.content;
-        } else {
-          this.products = [];
-        }
-      });
-    }
+  reloadDataByName(queryFieldName:string) {
+    this.filter.name = queryFieldName;
+    this.reloadDataByFilter();
   }
+
+  reloadDataByCategory(queryFieldCategory:Category) {
+    this.filter.category = queryFieldCategory;
+    this.reloadDataByFilter();
+  }
+
+  reloadDataByFilter(){
+    this.productService.getProductsByFilters(this.filter)
+    .subscribe((result: PageProduct) => {
+      if (result !== undefined &&
+          result.content !== undefined && result.content.length > 0){
+        this.products = result.content;
+      } else {
+        this.products = [];
+      }
+    });
+  }
+
 
   deleteProduct(id: number) {
 
@@ -65,12 +78,7 @@ export class ProductListComponent implements OnInit {
       this.productService.deleteProduct(id)
       .subscribe(
         data => {
-          console.log(data);
-          if(this.queryField !== undefined && this.queryField.value !== ""){
-            this.reloadDataByName(this.queryField.value);
-          } else {
-            this.reloadData();
-          }
+          this.reloadDataByFilter();
         },
         error => console.log(error));
     }
